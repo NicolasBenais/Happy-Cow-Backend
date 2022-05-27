@@ -7,9 +7,9 @@ const uid2 = require("uid2");
 const User = require("../models/User");
 
 router.post("/signup", async (req, res) => {
-  const { email, username, password } = req.fields;
+  const { email, firstname, lastname, password } = req.fields;
   try {
-    if (!username) {
+    if (!email) {
       res.status(400).json({ message: "No username" });
     }
     const user = await User.findOne({ email });
@@ -22,7 +22,8 @@ router.post("/signup", async (req, res) => {
 
       const newUser = new User({
         email,
-        username,
+        firstname,
+        lastname,
         salt,
         hash,
         token,
@@ -32,7 +33,8 @@ router.post("/signup", async (req, res) => {
       res.json({
         message: "Account created",
         token: newUser.token,
-        username: newUser.username,
+        firstname: newUser.firstname,
+        lastname: newUser.lastname,
       });
     }
   } catch (error) {
